@@ -47,6 +47,22 @@ def save_yaml(data, file_path):
     except Exception as e:
         print("Error: ", e)
 
+def xml_file(file_path):
+    if not os.path.exists(file_path):
+        print("File not found: ", file_path)
+        return None
+
+    try:
+        with open(file_path, 'r') as file:
+            xml_string = file.read()
+            data = xmltodict.parse(xml_string)
+        return data
+    except Exception as e:
+        print("Error: ", e)
+    
+    return None
+
+
 def main():
     args = get_args()
     input_file = args.input_file
@@ -56,6 +72,8 @@ def main():
         load_function = json_file
     elif input_file.lower().endswith('.yaml') or input_file.lower().endswith('.yml'):
         load_function = yaml_file
+    elif input_file.lower().endswith('.xml'):
+        load_function = xml_file
     else:
         print("Unsupported file format. Currently, only .json, .yaml/.yml, and .xml files are supported for reading.")
         return
